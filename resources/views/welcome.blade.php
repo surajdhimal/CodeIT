@@ -1,8 +1,11 @@
 <x-frontend-layout>
     <section>
+        <img class="w-full h-60" src="{{ asset('images/ocean.webp') }}" alt="">
+
         <div class="container py-10">
             <h1 class="text-3xl font-medium text-center mb-5">Create Company</h1>
-            <form action="" method="post">
+            <form action="/post-company" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label for="name">Enter Company Name:</label>
@@ -31,4 +34,6 @@
             </form>
         </div>
     </section>
+
 </x-frontend-layout>
+
