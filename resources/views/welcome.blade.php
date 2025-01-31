@@ -4,7 +4,7 @@
 
         <div class="container py-10">
             <h1 class="text-3xl font-medium text-center mb-5">Create Company</h1>
-            <form action="/post-company" method="post" enctype="multipart/form-data">
+            <form action="{{ route('post_company') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="grid grid-cols-2 gap-5">
                     <div>

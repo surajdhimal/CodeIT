@@ -1,7 +1,13 @@
+<x-frontend-layout>
 <section>
     <div class="container py-10">
         <h1 class="text-2xl font-medium text-center mb-5">Company Lists</h1>
-{{ $companies}}
+{{-- {{ $companies}} --}}
+@foreach ($companies as $company)
+        <h1>{{ $company->name }}</h1>
+        <h1>{{ $company->phone }}</h1>
+        <h1>{{$company->logo}}</h1>
+@endforeach
         <table class="w-full text-center">
             <thead>
                 <tr>
@@ -14,15 +20,19 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($companies as $index => $company)
                 <tr>
-                    <td class="border p-2">1</td>
-                    <td class="border p-2">Code IT</td>
-                    <td class="border p-2">codeit@gmail.com</td>
-                    <td class="border p-2">9836473829</td>
-                    <td class="border p-2"><img src="" alt=""></td>
-                    <td class="border p-2">Swayambhu, Kathmandu, Nepal</td>
+                    <td class="border p-2">{{++$index}}</td>
+                    <td class="border p-2">{{$company->name}}</td>
+
+                    <td class="border p-2">{{$company->email}}</td>
+                    <td class="border p-2">{{$company->phone}}</td>
+                    <td class="border p-2"><img src="{{ asset($company->logo)}}" class="w-40" alt="{{$company->name}}"></td>
+                    <td class="border p-2">{{$company->address}}</td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
 </section>
+</x-frontend-layout>
