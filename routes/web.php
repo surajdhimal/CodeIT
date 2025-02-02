@@ -1,20 +1,15 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CourseController;
 use App\Models\Company;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $companies = Company::all();
-    // return $companies;
-    return view('welcome', compact('companies'));
-})->name("home");
+Route::get('/',[CompanyController::class, "home"])->name("home");
 
-Route::get("/company-list", function(){
-    $companies = Company::all();
-    return view("company_list", compact('companies'));
-})->name('company');
+Route::get("/company-list", [CompanyController::class, "company"])->name('company');
 
 Route::get('/about',function(){
     return view('about');
@@ -24,8 +19,19 @@ Route::get('/course',function(){
     return view('course');
 });
 
-Route::post('/post-company', function(Request $request){
-    $company = new Company();
+Route::post('/post-company', [CompanyController::class, "post_company"])->name('post_company');
+
+Route::post('/post-course', [CourseController::class, "post_course"]);
+
+Route::get('/edit-company/{id}', function($id){
+    // return $id;
+    $company = Company::find($id);
+    // return $company;
+    return view('edit-company', compact('company'));
+})->name('edit_company');
+
+Route::put('/update-company/{id}', function(Request $request, $id){
+    $company = Company::find($id);
 
     $company->name = $request->name;
     $company->address = $request->address;
@@ -37,29 +43,15 @@ Route::post('/post-company', function(Request $request){
         $file->move('images', $fileName);
         $company->logo = "images/$fileName";
     }
-    $company->save();
+    $company->update();
+    toast("Company Updated Successfully", "success");
 
     return redirect()->back();
-})->name('post_company');
+})->name('update_company');
 
-Route::post('/post-course', function(Request $request){
-    // return $request->all();
-    // dd($request->all());
-    $request->validate([
-       'name' => 'required|max:255',
-       'price'=> 'required|numeric|min:1',
-       'image' => 'required|image|mimes:jpg,png,jpeg|max:2048'
-    ]);
-
-    $course = new Course();
-    $course->name = $request->name;
-    $course->price = $request->price;
-    $file = $request->image;
-    if ($file) {
-        $fileName = time() . "." . $file->getClientOriginalExtension();
-        $file->move('images', $fileName);
-        $course->image = "images/$fileName";
-    }
-    $course->save();
+Route::delete('delete-company/{id}', function($id){
+    $company = Company::find($id);
+    $company->delete();
+    toast("Company Deleted Successfully", "success");
     return redirect()->back();
-});
+})->name('delete_company');
