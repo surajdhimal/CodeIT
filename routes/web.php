@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Models\Company;
@@ -55,3 +56,7 @@ Route::delete('delete-company/{id}', function($id){
     toast("Company Deleted Successfully", "success");
     return redirect()->back();
 })->name('delete_company');
+
+Route::get('admissions', [AdmissionController::class, 'index'])->name('admission.index');
+Route::get('admissions/create', [AdmissionController::class, 'create'])->name('admission.create');
+Route::post('admissions/store', [AdmissionController::class, 'store'])->name('admission.store');
